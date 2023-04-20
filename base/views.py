@@ -8,6 +8,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
+from .forms import RoomForm, UserForm
+
+
 # Create your views here.
 # rooms = [{'id': 1, 'name': 'lets learn python'},
 #          {'id': 2, 'name': 'lets learn java'},
@@ -189,3 +192,16 @@ def deleteMessage(request, pk):
         return redirect('home')
 
     return render(request, 'base/delete.html', {'obj': message})
+
+
+@login_required(login_url='login')
+def updateUser(request):
+    user = request.user
+    form = UserForm(instance=user)
+
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user-profile', pk=user.id)
+    return render(request, 'base/update-user.html', {'form': form})
