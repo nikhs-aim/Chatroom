@@ -2,7 +2,7 @@
   <div class="activities__header">
     <h2>Recent Activities</h2>
   </div>
-  {% for message in room_messages %}
+  {% for message in room_messages reversed %}
   <div class="activities__box">
     <div class="activities__boxHeader roomListRoom__header">
       <a
